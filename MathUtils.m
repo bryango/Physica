@@ -1,3 +1,5 @@
+(* ::Package:: *)
+
 BeginPackage["Utils`"]
 packageName = Context[];
 
@@ -36,7 +38,7 @@ Funcs`hideInfo[info_, styles_: {}] := hideShow[
 ];
 
 
-"### Hold Items for Further processing";
+"### Hold Items for Further Processing";
 SetAttributes[Funcs`holdItems, HoldAll]
 Funcs`holdItems[list_] := ReleaseHold[
     MapAt[HoldForm, Hold[list], {All, All}]
@@ -51,7 +53,16 @@ Funcs`colorPalette[theme_] := (
 );
 
 Funcs`getPlotPoints[plot_] := Cases[
-    plot, Line[pts_] :> pts, Infinity
+    plot, Line[pts_] :> Line[pts], Infinity
+] // Flatten // Cases[
+    #, Line[pts_] :> Sequence @@ pts, Infinity
+] &;
+
+"### Export Plots";
+SetAttributes[Funcs`exportPlot, HoldAll];
+Funcs`exportPlot[plot_, dir_: "plots/"] := Export[
+    dir <> ToString[HoldForm[plot]] <> ".pdf",
+    ReleaseHold[plot]
 ];
 
 
