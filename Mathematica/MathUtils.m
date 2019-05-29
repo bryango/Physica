@@ -66,6 +66,42 @@ Funcs`exportPlot[plot_, dir_: "plots/"] := Export[
 ];
 
 
+"### Import Notebook";
+Funcs`importNotebook[path_, open_: False] := Module[{
+        nb, nbPath, context, action
+    },
+    context = Context[];
+    nbPath = FindFile[path];
+    nb = NotebookOpen[
+        nbPath,
+        CellContext -> context,
+        Visible -> None
+    ];
+    NotebookEvaluate[nb];
+    NotebookClose[nb];
+
+    action := NotebookOpen[nbPath];
+    If[open, action];
+    Button[path, action]
+];
+
+"### Generate GIF From Manipulate[]";
+Funcs`manipulateGif[manipulate_, name_String, step_Integer] := Export[
+    name <> ".gif",
+    Import[
+        Export[name <> ".avi", manipulate]
+        , "ImageList"
+    ][[1 ;; -1 ;; step]]
+];
+
+"### Show Exec Time & Pass Output";
+SetAttributes[Funcs`timeExec, {HoldAll, SequenceHold}];
+Funcs`timeExec[operations__] := (
+   Print[Now];
+   (Print[#1]; #2) & @@ Timing[operations]
+);
+
+
 EndPackage[]
 
 
