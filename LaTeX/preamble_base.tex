@@ -5,8 +5,10 @@
 	\usepackage{uri} % \arxiv
 	\usepackage{ccicons} % creative commons
 	\usepackage[datesep=/]{datetime2} % modify \today
+	\usepackage[space]{grffile} % file name fix
 	\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
-	\usepackage{etoolbox}
+	\PassOptionsToPackage{hyphens}{url}
+	\usepackage{etoolbox,environ}
 % Page
 	% parskip backup
 	\newlength{\parskipbackup}
@@ -27,7 +29,9 @@
 % Presentation
 	\usepackage[table]{xcolor}
 	\usepackage{graphicx}
+%	\usepackage{wrapfig,subfig}
 	\usepackage{svg}
+	\usepackage[export]{adjustbox}
 	\usepackage[above]{placeins} % \FloatBarrier
 	\usepackage{tikz}
 %	\usepackage{tikz-cd} % Commutative diagram
@@ -37,7 +41,8 @@
 %	\usepackage{minted}
 %	\usemintedstyle{colorful}
 % Tables
-	\usepackage{booktabs,tabularx,multirow}
+	\usepackage{booktabs,tabularx,multirow,bigstrut}
+%	\usepackage{dcolumn}
 	\newcolumntype{C}[1]{>{%
 		\hsize=#1\hsize\centering\arraybackslash%
 	}X}
@@ -63,23 +68,28 @@
 %	\usepackage{wasysym}
 %	\usepackage{amsthm}
 	\usepackage[g]{esvect}
+%	\usepackage[mathscr]{eucal}
 	\usepackage[scr=esstix]{mathalfa}
 	\usepackage[only,sslash]{stmaryrd}
 	% math display
-	\newcommand*\bbox[1]{%
+	\newcommand*\nicebox[1]{%
 		\fbox{\hspace{1em}\addstackgap[5pt]{#1}\hspace{1em}}%
 	}
-	\empheqset{box=\bbox}
+	\empheqset{box=\nicebox}
 	\mathtoolsset{showonlyrefs}
 	\numberwithin{equation}{section}
 	\allowdisplaybreaks[2]
 	\sisetup{%
-		redefine-symbols=false,%
-		separate-uncertainty=true,%
-		range-phrase=\,\textasciitilde\,,%
-		arc-separator = \,
+		redefine-symbols=false
+		,separate-uncertainty=true
+		,range-phrase=\,\textasciitilde\,
+		,arc-separator=\,
 	}
 % Tweaks
+	% math line spacing
+	\newlength{\djot}
+	\setlength{\djot}{\jot}
+	\newcommand{\restorejot}{\setlength{\jot}{\djot}}
 	% legacy \oint
 	\let\ointop\undefined
 	\let\ointop\latexointop
@@ -113,6 +123,9 @@
 				(0,0) -- (.6,0);
 		\end{tikzpicture}
 	}}
+	\newcommand{\texstringonly}[1]{%
+		\texorpdfstring{#1}{}%
+	}
 % Hacks
 	\usepackage{xparse}
 	% physics.sty <texmf-dist/tex/latex/physics/>

@@ -35,7 +35,6 @@
 	% footnote
 	\geometry{footnotesep=.8\baselineskip} % pre footnote split
 	\setlength{\footnotesep}{2.5\parskip} % post footnote split
-	\setlength{\footskip}{2\baselineskip} % TODO: what is this?
 	\usepackage[bottom,splitrule]{footmisc}
 	% justification
 	\usepackage{ragged2e}
@@ -82,7 +81,7 @@
 % Header
 	\usepackage{fancyhdr,lastpage}
 %	\pagestyle{fancy}
-%	\fancyhf{} % clear default settings
+%	\fancyhf{}
 %	\lhead{
 %		\hspace{.2em}
 %		% logo
@@ -90,12 +89,7 @@
 %	}
 %	\cfoot{--\ \thepage\,/\,\pageref{LastPage} \ --}
 %	\renewcommand{\headrulewidth}{0.1pt}
-%	\renewcommand{\headrule}{\ifnum\value{page}=1\relax\else
-%		\vbox to 2pt{\hbox to \headwidth{\dotfill}\vss}
-%	\fi}
-%	\fancypagestyle{titlepagestyle}{%
-%		\fancyhead{}
-%		\chead{
-%			\vspace{2.5\baselineskip}
-%			% logo
+%	\renewcommand{\headrule}{
+%		\vbox to 2pt{
+%		\hbox to \headwidth{\dotfill}\vss}
 %	}
