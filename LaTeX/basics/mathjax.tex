@@ -1,6 +1,6 @@
 % MathJax supplementary macros,
 % ... as substitutes for LaTeX pkgs,
-% ... loaded after <macros.tex>.
+% ... loaded after `macros.tex`.
 %
 % mathtools
 \newcommand{\abs}[1]{\left|#1\right|}
@@ -12,5 +12,6 @@
 \newcommand{\dv}[2]{\frac{\dd{#1}}{\dd{#2}}}
 \newcommand{\pdv}[2]{\frac{\partial{#1}}{\partial{#2}}}
 %
-% more
+% more & hacks
 \newcommand{\mathds}[1]{\mathbf{#1}} % when without dsfont
+\newcommand{\mathnormal}[1]{\mathit{#1}} % when without mathnormal
