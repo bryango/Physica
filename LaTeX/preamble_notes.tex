@@ -17,6 +17,9 @@
 %	% section titles
 %	\usepackage{titlesec}
 %	\titleformat*{\section}{\large\bfseries}
+% Utils
+	\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+	\usepackage[table]{xcolor}
 % Page
 	\usepackage[
 		vmargin=.135\paperheight % 4cm
@@ -66,6 +69,9 @@
 %		,textfont+=it
 %		,singlelinecheck=false
 	}
+	% ref name
+	\renewcommand{\tableautorefname}{\tablename}
+	\renewcommand{\figureautorefname}{\figurename}
 % Personalizations
 	\newfontfamily\signature{Vladimir Script}
 	\newcommand{\midquote}{\signature May the Force be with you}

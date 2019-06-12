@@ -6,7 +6,6 @@
 	\usepackage{ccicons} % creative commons
 	\usepackage[datesep=/]{datetime2} % modify \today
 	\usepackage[space]{grffile} % file name fix
-	\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 	\PassOptionsToPackage{hyphens}{url}
 	\usepackage{etoolbox,environ}
 % Page
@@ -20,14 +19,12 @@
 	\setlength{\parskipnorm}{\parskip}
 	% footnote
 	\interfootnotelinepenalty=10000 % forbid footnote spanning pages
-	\usepackage{titling}
 % Chinese
 	\usepackage[UTF8
 		,heading=false
 	]{ctex}
 	\newcommand{\textkai}[1]{{\kaishu #1}}
 % Presentation
-	\usepackage[table]{xcolor}
 	\usepackage{graphicx}
 %	\usepackage{wrapfig,subfig}
 	\usepackage{svg}
@@ -100,9 +97,6 @@
 	\newcommand\inlineeqno{\stepcounter{equation}\ (\theequation)}
 	\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
 	\newcommand\raisemath[2]{\raisebox{#1\depth}{${#2}$}}
-	% ref name
-	\renewcommand{\tableautorefname}{\tablename}
-	\renewcommand{\figureautorefname}{\figurename}
 % Commands
 	% brackets
 	\DeclarePairedDelimiter\aqty{\langle}{\rangle}
