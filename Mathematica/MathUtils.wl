@@ -1,10 +1,9 @@
+#!/usr/bin/env wolframscript
 (* ::Package:: *)
 
 BeginPackage["Utils`"]
-packageName = Context[];
+Private`packageName = Context[];
 
-Utils::usage =
-    "Useful utilities for generic notebooks."
 
 
 "### Context Management";
