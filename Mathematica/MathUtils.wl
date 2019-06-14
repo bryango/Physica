@@ -1,23 +1,25 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
-"### Clean up";
-Quiet[
-    # @@ Names["Global" ~~ "`*" ..]
-    , {ClearAll::wrsym, Remove::rmnsm}
-] & /@ { ClearAll, Remove };
-
-
-
 BeginPackage["Utils`"]
 `Private`packageName = Context[];
 
 Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
 
+
 "### Context Management";
+Global`wipeAll[context_: "Global`"] := (Quiet[
+    # @@ Names[context ~~ "*" ~~ "`*" ...],
+    {ClearAll::wrsym, Remove::rmnsm, Remove::relex}
+] & /@ { ClearAll, Remove };);
+
+"# Clear old definitions";
+Global`wipeAll["Utils`"];
+
 Utils`prependContext[context_] := If[ ! MemberQ[$ContextPath, context],
     PrependTo[$ContextPath, context];
 ];
+
 
 "### Auto Collapse Cell";
 Utils`autoCollapse[] := (
@@ -79,7 +81,10 @@ Utils`importNotebook[path_, open_: False] := Module[{
         nb, nbPath, context, action
     },
     context = Context[];
-    nbPath = FindFile[path];
+    If[ (nbPath = FindFile[path]) // FailureQ,
+        Print[ToString[path] <> " - Not Found!"];
+        Return[];
+    ];
     nb = NotebookOpen[
         nbPath,
         CellContext -> context,
@@ -109,6 +114,15 @@ Utils`timeExec[operations__] := (
    (Print[#1]; #2) & @@ Timing[operations]
 );
 
+"### Print Previous Result";
+Utils`printPrevious := Print[%];
+
+"### Inspect Variable";
+SetAttributes[Utils`printName, HoldAll];
+Utils`printName[var_] := Print[{
+    SymbolName[Unevaluated[var]], var
+}];
+
 
 End[] (* End `Private` *)
 EndPackage[]
@@ -120,5 +134,5 @@ Column[{
         , Information["Utils`*"]
     }
     , Frame -> True, FrameStyle -> Transparent
-    , Spacings -> {Automatic, {2, 1}}
+    (* , Spacings -> {Automatic, {2, 1}} *)
 ] // hideShow
