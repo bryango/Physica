@@ -1,6 +1,14 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
+"### Clean up";
+Quiet[
+    # @@ Names["Global" ~~ "`*" ..]
+    , {ClearAll::wrsym, Remove::rmnsm}
+] & /@ { ClearAll, Remove };
+
+
+
 BeginPackage["Utils`"]
 `Private`packageName = Context[];
 
@@ -29,7 +37,7 @@ Utils`hideShow[x_, styles_: {}] := (
 
 SetAttributes[Utils`hideInfo, HoldFirst];
 Utils`hideInfo[info_, styles_: {}] := hideShow[
-    "### " <> ToString[info],
+    "(* " <> ToString[info] <> " *)",
     {Bold}~Join~styles
 ];
 
@@ -47,6 +55,10 @@ Utils`colorPalette[theme_] := (
         Method /. Charting`ResolvePlotTheme[theme, ListPlot]
     )) /. Directive[x_, __] :> x
 );
+
+{Utils`colors, Utils`colorsDefault} = colorPalette /@ {
+    "Scientific", "Default"
+};
 
 Utils`getPlotPoints[plot_] := Cases[
     plot, Line[pts_] :> Line[pts], Infinity
@@ -100,3 +112,13 @@ Utils`timeExec[operations__] := (
 
 End[] (* End `Private` *)
 EndPackage[]
+
+
+"### Show public Information";
+Column[{
+        Style[NotebookFileName[], Bold, Larger]
+        , Information["Utils`*"]
+    }
+    , Frame -> True, FrameStyle -> Transparent
+    , Spacings -> {Automatic, {2, 1}}
+] // hideShow
