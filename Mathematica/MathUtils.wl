@@ -7,13 +7,15 @@ BeginPackage["Utils`"]
 Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
 
 
-"### Context Management";
+(* ::Section:: *)
+(*Context Management*)
+
 Global`wipeAll[context_: "Global`"] := (Quiet[
     # @@ Names[context ~~ "*" ~~ "`*" ...],
     {ClearAll::wrsym, Remove::rmnsm, Remove::relex}
 ] & /@ { ClearAll, Remove };);
 
-"# Clear old definitions";
+"## clear old definitions";
 Global`wipeAll["Utils`"];
 
 Utils`prependContext[context_] := If[ ! MemberQ[$ContextPath, context],
@@ -21,7 +23,9 @@ Utils`prependContext[context_] := If[ ! MemberQ[$ContextPath, context],
 ];
 
 
-"### Auto Collapse Cell";
+(* ::Section:: *)
+(*Auto Collapse*)
+
 Utils`autoCollapse[] := (
     If[ $FrontEnd =!= $Failed,
         SelectionMove[EvaluationNotebook[], All, GeneratedCell];
@@ -44,14 +48,18 @@ Utils`hideInfo[info_, styles_: {}] := hideShow[
 ];
 
 
-"### Hold Items for Further Processing";
+(* ::Section:: *)
+(*Hold Items*)
+
 SetAttributes[Utils`holdItems, HoldAll]
 Utils`holdItems[list_] := ReleaseHold[
     MapAt[HoldForm, Hold[list], {All, All}]
 ];
 
 
-"### Plot Utils";
+(* ::Section:: *)
+(*Plot Utils*)
+
 Utils`colorPalette[theme_] := (
     ("DefaultPlotStyle" /. (
         Method /. Charting`ResolvePlotTheme[theme, ListPlot]
@@ -68,7 +76,6 @@ Utils`getPlotPoints[plot_] := Cases[
     #, Line[pts_] :> Sequence @@ pts, Infinity
 ] &;
 
-"### Export Plots";
 SetAttributes[Utils`exportPlot, HoldAll];
 Utils`exportPlot[plot_, dir_: "plots/"] := Export[
     dir <> ToString[HoldForm[plot]] <> ".pdf",
@@ -76,7 +83,9 @@ Utils`exportPlot[plot_, dir_: "plots/"] := Export[
 ];
 
 
-"### Import Notebook";
+(* ::Section:: *)
+(*Import & Export*)
+
 Utils`importNotebook[path_, open_: False] := Module[{
         nb, nbPath, context, action
     },
@@ -98,7 +107,7 @@ Utils`importNotebook[path_, open_: False] := Module[{
     Button[path, action]
 ];
 
-"### Generate GIF From Manipulate[]";
+"## generate gif from Manipulate[]";
 Utils`manipulateGif[manipulate_, name_String, step_Integer] := Export[
     name <> ".gif",
     Import[
@@ -107,28 +116,32 @@ Utils`manipulateGif[manipulate_, name_String, step_Integer] := Export[
     ][[1 ;; -1 ;; step]]
 ];
 
-"### Show Exec Time & Pass Output";
+(* ::Section:: *)
+(*Inspections*)
+
+"## show exec time & pass output";
 SetAttributes[Utils`timeExec, {HoldAll, SequenceHold}];
 Utils`timeExec[operations__] := (
    Print[Now];
    (Print[#1]; #2) & @@ Timing[operations]
 );
 
-"### Print Previous Result";
 Utils`printPrevious := Print[%];
 
-"### Inspect Variable";
+"## inspect variable";
 SetAttributes[Utils`printName, HoldAll];
 Utils`printName[var_] := Print[{
     SymbolName[Unevaluated[var]], var
 }];
 
 
+(* ::Section:: *)
+(*Ending*)
+
 End[] (* End `Private` *)
 EndPackage[]
 
-
-"### Show public Information";
+"### show public information";
 Column[{
         Style[NotebookFileName[], Bold, Larger]
         , Information["Utils`*"]
