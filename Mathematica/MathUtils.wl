@@ -8,7 +8,7 @@ Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
 
 
 (* ::Section:: *)
-(*Context Management*)
+(* Context Management *)
 
 Global`wipeAll[context_: "Global`"] := (Quiet[
     # @@ Names[context ~~ "*" ~~ "`*" ...],
@@ -24,14 +24,20 @@ Utils`prependContext[context_] := If[ ! MemberQ[$ContextPath, context],
 
 
 (* ::Section:: *)
-(*Auto Collapse*)
+(* Auto Collapse *)
+(* Reference: <https://mathematica.stackexchange.com/a/683/65246> *)
 
-Utils`autoCollapse[] := (
+Utils`autoCollapse[] := Module[{
+        selectionCache, nb = EvaluationNotebook[]
+    },
     If[ $FrontEnd =!= $Failed,
-        SelectionMove[EvaluationNotebook[], All, GeneratedCell];
-        FrontEndTokenExecute["SelectionCloseUnselectedCells"]
+        SelectionMove[nb, Previous, Cell, 1];
+        selectionCache = SelectedCells[] // Last;
+        SelectionMove[nb, All, GeneratedCell];
+        FrontEndTokenExecute["SelectionCloseUnselectedCells"];
+        SelectionMove[selectionCache, After, Cell];
     ]
-);
+];
 
 SetAttributes[Utils`hideShow, HoldFirst];
 Utils`hideShow[x_, styles_: {}] := (
@@ -49,7 +55,7 @@ Utils`hideInfo[info_, styles_: {}] := hideShow[
 
 
 (* ::Section:: *)
-(*Hold Items*)
+(* Hold Items *)
 
 SetAttributes[Utils`holdItems, HoldAll]
 Utils`holdItems[list_] := ReleaseHold[
@@ -58,7 +64,7 @@ Utils`holdItems[list_] := ReleaseHold[
 
 
 (* ::Section:: *)
-(*Plot Utils*)
+(* Plot Utils *)
 
 Utils`colorPalette[theme_] := (
     ("DefaultPlotStyle" /. (
@@ -84,7 +90,7 @@ Utils`exportPlot[plot_, dir_: "plots/"] := Export[
 
 
 (* ::Section:: *)
-(*Import & Export*)
+(* Import & Export *)
 
 Utils`importNotebook[path_, open_: False] := Module[{
         nb, nbPath, context, action
@@ -116,8 +122,15 @@ Utils`manipulateGif[manipulate_, name_String, step_Integer] := Export[
     ][[1 ;; -1 ;; step]]
 ];
 
+Utils`saveScript[] := FrontEndExecute[
+    FrontEndToken[EvaluationNotebook[], "Save", {
+        NotebookDirectory[] <> FileBaseName[NotebookFileName[]] <> ".wl",
+        "Script"
+    }]
+];
+
 (* ::Section:: *)
-(*Inspections*)
+(* Inspections *)
 
 "## show exec time & pass output";
 SetAttributes[Utils`timeExec, {HoldAll, SequenceHold}];
@@ -126,7 +139,7 @@ Utils`timeExec[operations__] := (
    (Print[#1]; #2) & @@ Timing[operations]
 );
 
-Utils`printPrevious := Print[%];
+Utils`printPrevious[printCmd_: Identity] := Print[% // printCmd];
 
 "## inspect variable";
 SetAttributes[Utils`printName, HoldAll];
@@ -136,7 +149,7 @@ Utils`printName[var_] := Print[{
 
 
 (* ::Section:: *)
-(*Ending*)
+(* Ending *)
 
 End[] (* End `Private` *)
 EndPackage[]
