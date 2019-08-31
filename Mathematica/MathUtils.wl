@@ -1,5 +1,8 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
+(* For an up-to-date version, go to:
+    https://github.com/bryango/Templates > Mathematica
+*)
 
 BeginPackage["Utils`"]
 `Private`packageName = Context[];
@@ -128,6 +131,45 @@ Utils`saveScript[] := FrontEndExecute[
         "Script"
     }]
 ];
+
+"## generate LaTeX math expressions";
+Utils`toLaTeX[expr_] := expr \
+    // TraditionalForm \
+    // ExportString[#, "TeXFragment"] & \
+    // StringTrim[#] & \
+    // StringDelete[RegularExpression["^\\\\\[|\\\\\]$"]];
+
+
+(* ::Section:: *)
+(* Mathematics *)
+
+"## check if expression is function";
+"## ... reference: <https://stackoverflow.com/a/3748658/10829731>";
+Utils`functionQ[
+    _Function | _InterpolatingFunction | _CompiledFunction
+] = True;
+functionQ[f_Symbol] := Or[
+    DownValues[f] =!= {},
+    MemberQ[Attributes[f], NumericFunction]
+];
+functionQ[_] = False;
+
+"## simplify functional expressions";
+Utils`fSimplify[ expr_Function | expr_Composition ] := Module[{
+    func = expr
+},
+    While[Head[func] =!= Function,
+        If[Head[func] =!= Composition,
+            Message[fSimplify::notfunc, func];
+            Abort[];
+        ];
+        func = func // Last;
+    ];
+    Function[Evaluate[Simplify[
+        (expr) @@ (Slot /@ Range[Length[func[[1]]]])
+    ]]]
+];
+fSimplify::notfunc = "`1` is not a Function or a Composition of Functions."
 
 (* ::Section:: *)
 (* Inspections *)
