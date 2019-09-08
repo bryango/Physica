@@ -2,12 +2,14 @@
 	\def\hmmax{0}
 	\def\bmmax{0}
 % Utils
+	\usepackage{hyperref} % set option with \hypersetup
 	\usepackage{uri} % \arxiv
 	\usepackage{ccicons} % creative commons
 	\usepackage[datesep=/]{datetime2} % modify \today
 	\usepackage[space]{grffile} % file name fix
 	\PassOptionsToPackage{hyphens}{url}
 	\usepackage{etoolbox,environ}
+	\newcommand{\wiki}[1]{\tt Wikipedia:\it #1}
 % Page
 	% parskip backup
 	\newlength{\parskipbackup}
