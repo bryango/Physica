@@ -10,6 +10,7 @@
 	\PassOptionsToPackage{hyphens}{url}
 	\usepackage{etoolbox,environ}
 	\newcommand{\wiki}[1]{\tt Wikipedia:\it #1}
+	\usepackage{xparse}
 % Page
 	% parskip backup
 	\newlength{\parskipbackup}
@@ -105,7 +106,7 @@
 	% brackets
 	\DeclarePairedDelimiter\aqty{\langle}{\rangle}
 	\DeclarePairedDelimiterX\inprod[2]{\langle}{\rangle}{#1,#2}
-	\newcommand{\ave}[1]{\aqty{#1}}
+	\let\ave\aqty
 	% extras
 	\newcommand{\scriptr}{\mathcalligra{r}\,}
 	\newcommand{\rvector}{\pmb{\mathcalligra{r}}\,}
@@ -125,9 +126,9 @@
 		\texorpdfstring{#1}{}%
 	}
 % Hacks
-	\usepackage{xparse}
 	% physics.sty <texmf-dist/tex/latex/physics/>
 	% USER: more spacing around Dirac's middle vert
+	% REQUIRE: xparse
 	\newcommand{\xmiddle}[1]{\mspace{1mu}\middle#1\mspace{1mu}}
 	\DeclareDocumentCommand\innerproduct{ s m g }
 	{ % Inner product
