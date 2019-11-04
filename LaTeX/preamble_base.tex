@@ -7,9 +7,9 @@
 	\usepackage{ccicons} % creative commons
 	\usepackage[datesep=/]{datetime2} % modify \today
 	\usepackage[space]{grffile} % file name fix
-	\PassOptionsToPackage{hyphens}{url}
+%	\PassOptionsToPackage{hyphens}{url} % not useful?
 	\usepackage{etoolbox,environ}
-	\newcommand{\wiki}[1]{\tt Wikipedia:\it #1}
+	\newcommand{\wiki}[1]{\tt Wikipedia:\,\it #1}
 	\usepackage{xparse}
 % Page
 	% parskip backup
@@ -60,7 +60,7 @@
 % Math & Fonts
 	\let\latexointop\ointop
 	\usepackage{mathtools,amssymb,bm % basics
-		,physics,siunitx,slashed % physics
+		,physics,siunitx,slashed,tensor % physics
 		,esint,nicefrac,extarrows,mathrsfs % more symbols
 		,calligra,romannum,dsfont,fourier-orns % nice fonts
 %		,upgreek,textcomp % more fonts
@@ -74,6 +74,7 @@
 	\usepackage[scr=esstix]{mathalfa}
 	\usepackage[only,sslash]{stmaryrd}
 	% math display
+	\newcommand{\id}[1]{\indices{#1}}
 	\newcommand*\nicebox[1]{%
 		\fbox{\hspace{1em}\addstackgap[5pt]{#1}\hspace{1em}}%
 	}
