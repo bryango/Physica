@@ -5,6 +5,7 @@
 	\usepackage{hyperref} % set option with \hypersetup
 	\usepackage{uri} % \arxiv
 	\usepackage{ccicons} % creative commons
+	\usepackage[super]{nth} % nth superscript
 	\usepackage[datesep=/]{datetime2} % modify \today
 	\usepackage[space]{grffile} % file name fix
 %	\PassOptionsToPackage{hyphens}{url} % not useful?
@@ -20,12 +21,16 @@
 	% parskip backup
 	\newlength{\parskipnorm}
 	\setlength{\parskipnorm}{\parskip}
+	% baseline
+%	\renewcommand{\baselinestretch}{1.05}
 	% footnote
 	\interfootnotelinepenalty=10000 % forbid footnote spanning pages
 % Chinese
 	\usepackage[UTF8
 		,heading=false
+%		,scheme=plain
 	]{ctex}
+%	\usepackage{indentfirst} % when scheme=plain
 	\newcommand{\textkai}[1]{{\kaishu #1}}
 % Presentation
 	\usepackage{xcolor}
@@ -61,7 +66,7 @@
 	\let\latexointop\ointop
 	\usepackage{mathtools,amssymb,bm % basics
 		,physics,siunitx,slashed,tensor % physics
-		,esint,nicefrac,extarrows,mathrsfs % more symbols
+		,esint,nicefrac,extarrows % more symbols
 		,calligra,romannum,dsfont,fourier-orns % nice fonts
 %		,upgreek,textcomp % more fonts
 		,eqnarray,resizegather,empheq % more envs
@@ -79,7 +84,7 @@
 		\fbox{\hspace{1em}\addstackgap[5pt]{#1}\hspace{1em}}%
 	}
 	\empheqset{box=\nicebox}
-	\mathtoolsset{showonlyrefs}
+	\mathtoolsset{showonlyrefs,showmanualtags}
 	\numberwithin{equation}{section}
 	\allowdisplaybreaks[2]
 	\sisetup{%

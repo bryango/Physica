@@ -1,0 +1,35 @@
+% Theorems
+\usepackage{amsthm}
+\usepackage{thmtools}
+\declaretheoremstyle[
+	headpunct={}
+	,spaceabove=.8\baselineskip
+	,spacebelow=.8\baselineskip
+	,notefont=\bfseries
+%	,bodyfont=\itshape
+	,postheadspace=.6em
+	,mdframed={
+		hidealllines=true
+		,backgroundcolor=lightgray!20
+		,leftmargin=10
+		,rightmargin=10
+		,splittopskip=1.5\baselineskip
+		,innerbottommargin=\baselineskip
+	}
+]{nonumber}
+
+\declaretheorem[
+	numbered=no
+	,style=nonumber
+	,name=Theorem
+]{theorem*}
+\declaretheorem[
+	numbered=no
+	,style=nonumber
+	,name=Definition
+]{definition*}
+\declaretheorem[
+	numbered=no
+	,style=nonumber
+	,name=Example
+]{example*}
