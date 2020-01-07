@@ -10,8 +10,10 @@
 	\usepackage[space]{grffile} % file name fix
 %	\PassOptionsToPackage{hyphens}{url} % not useful?
 	\usepackage{etoolbox,environ}
-	\newcommand{\wiki}[1]{\tt Wikipedia:\,\it #1}
 	\usepackage{xparse}
+	\usepackage{chngcntr}
+%	\counterwithout{equation}{section}
+	\newcommand{\wiki}[1]{\tt Wikipedia:\,\it #1}
 % Page
 	% parskip backup
 	\newlength{\parskipbackup}
