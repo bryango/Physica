@@ -35,9 +35,11 @@
 %	\usepackage{indentfirst} % when scheme=plain
 	\newcommand{\textkai}[1]{{\kaishu #1}}
 % Presentation
+	\PassOptionsToPackage{%
+		table,svgnames,dvipsnames
+	}{xcolor}
 	\usepackage{xcolor}
 	\usepackage{graphicx}
-	\PassOptionsToPackage{table}{xcolor}
 %	\usepackage{wrapfig,subfig}
 	\usepackage{svg}
 	\usepackage[export]{adjustbox}

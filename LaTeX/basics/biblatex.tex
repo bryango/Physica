@@ -19,6 +19,7 @@
 	,citestyle=numeric-comp
 	,backend=biber % caspervector 必须使用 biber 后端
 	,sorting=none % 英、中文献排序，对比 ecnyt, cenyt
+%	,block=ragged
 ]{biblatex}
 % 按学校要求设定参考文献列表中的条目之内及之间的距离
 \setlength{\bibitemsep}{3bp}
@@ -27,3 +28,24 @@
 
 \let\simplecite\cite
 \renewcommand{\cite}[1]{\parencite{#1}}
+
+% DOI as hyperlink & titles
+\ExecuteBibliographyOptions{doi=false}
+\newbibmacro{string+doi}[1]{%
+	\iffieldundef{doi}{#1}%
+	{\href{https://dx.doi.org/\thefield{doi}}{#1}}%
+}
+\DeclareFieldFormat*{title}%
+	{\usebibmacro{string+doi}{\mkbibemph{#1}}\isdot}
+\DeclareFieldFormat*{journaltitle}%
+	{\mkbibemph{#1}\adddot\nopunct}
+\DeclareFieldFormat{titlecase}{#1} % no lower case (SentenceCase)
+
+\DeclareFieldFormat[article]{volume}%
+	{\mkbibbold{#1}\isdot}
+\DeclareFieldFormat{date}%
+	{\mkbibbold{#1}\isdot}
+\DeclareFieldFormat{isbn}%
+	{\mkbibacro{ISBN}\addcolon\addnbspace\smaller[0.5]#1\isdot}
+\DeclareFieldFormat{url}%
+	{\mkbibacro{URL}\addcolon\addnbspace\smaller[0.5]\url{#1}\isdot}
