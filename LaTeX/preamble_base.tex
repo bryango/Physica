@@ -145,19 +145,7 @@
 % Hacks
 	% physics.sty <texmf-dist/tex/latex/physics/>
 	% USER: more spacing around Dirac's middle vert
-	% REQUIRE: xparse
-	\newcommand{\xmiddle}[1]{\mspace{1mu}\middle#1\mspace{1mu}}
-	\DeclareDocumentCommand\innerproduct{ s m g }
-	{ % Inner product
-		\IfBooleanTF{#1}
-		{ % No resize
-			\IfNoValueTF{#3}
-			{\vphantom{#2}\left\langle\smash{#2}\xmiddle\vert\smash{#2}\right\rangle}
-			{\vphantom{#2#3}\left\langle\smash{#2}\xmiddle\vert\smash{#3}\right\rangle}
-		}
-		{ % Auto resize
-			\IfNoValueTF{#3}
-			{\left\langle{#2}\xmiddle\vert{#2}\right\rangle}
-			{\left\langle{#2}\xmiddle\vert{#3}\right\rangle}
-		}
+	\let\latexmiddle\middle
+	\renewcommand{\middle}[1]{%
+		\mspace{.8mu}\latexmiddle#1\mspace{.8mu}
 	}
