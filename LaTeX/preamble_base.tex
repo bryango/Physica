@@ -10,10 +10,13 @@
 	\usepackage[space]{grffile} % file name fix
 %	\PassOptionsToPackage{hyphens}{url} % not useful?
 	\usepackage{etoolbox,environ}
-	\usepackage{xparse}
 	\usepackage{chngcntr}
 %	\counterwithout{equation}{section}
 	\newcommand{\wiki}[1]{\tt Wikipedia:\,\it #1}
+	\newcommand{\wikiref}[2]{\wiki{\href{#1}{#2}}}
+	\newcommand{\https}[1]{%
+		\href{https://#1}{\nolinkurl{#1}}%
+	}
 % Page
 	% parskip backup
 	\newlength{\parskipbackup}
@@ -34,6 +37,9 @@
 	]{ctex}
 %	\usepackage{indentfirst} % when scheme=plain
 	\newcommand{\textkai}[1]{{\kaishu #1}}
+	\newcommand{\cjkverb}[1]{%
+		\texttt{\xeCJKVerbAddon #1}
+	} % CJK verbatim
 % Presentation
 	\PassOptionsToPackage{%
 		table,svgnames,dvipsnames
@@ -90,6 +96,7 @@
 	\empheqset{box=\nicebox}
 	\mathtoolsset{showonlyrefs,showmanualtags}
 	\numberwithin{equation}{section}
+%	\counterwithout{equation}{section}
 	\allowdisplaybreaks[2]
 	\sisetup{%
 		redefine-symbols=false
