@@ -12,7 +12,9 @@
 	\usepackage{etoolbox,environ}
 	\usepackage{chngcntr}
 %	\counterwithout{equation}{section}
-	\newcommand{\wiki}[1]{\tt Wikipedia:\,\it #1}
+	\newcommand{\wiki}[1]{%
+		\texttt{Wikipedia:}\,\textit{#1}%
+	}
 	\newcommand{\wikiref}[2]{\wiki{\href{#1}{#2}}}
 	\newcommand{\https}[1]{%
 		\href{https://#1}{\nolinkurl{#1}}%
@@ -75,7 +77,8 @@
 % Math & Fonts
 	\let\latexointop\ointop
 	\usepackage{mathtools,amssymb,bm % basics
-		,physics,siunitx,slashed,tensor,simpler-wick % physics
+		,physics,siunitx,slashed,tensor % physics
+		,simpler-wick,simplewick % wick
 		,esint,nicefrac,extarrows % more symbols
 		,calligra,romannum,dsfont,fourier-orns % nice fonts
 %		,upgreek,textcomp % more fonts
