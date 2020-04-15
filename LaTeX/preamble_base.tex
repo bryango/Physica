@@ -9,7 +9,7 @@
 	\usepackage[datesep=/]{datetime2} % modify \today
 	\usepackage[space]{grffile} % file name fix
 %	\PassOptionsToPackage{hyphens}{url} % not useful?
-	\usepackage{etoolbox,environ}
+	\usepackage{etoolbox,environ,iftex}
 	\usepackage{chngcntr}
 %	\counterwithout{equation}{section}
 	\newcommand{\wiki}[1]{%
@@ -92,7 +92,7 @@
 	\usepackage[scr=esstix]{mathalfa}
 	\usepackage[only,sslash]{stmaryrd}
 	% math display
-	\newcommand{\id}[1]{\indices{#1}}
+	\let\id\indices
 	\newcommand*\nicebox[1]{%
 		\fbox{\hspace{1em}\addstackgap[5pt]{#1}\hspace{1em}}%
 	}

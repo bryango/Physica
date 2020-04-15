@@ -48,9 +48,11 @@
 %	\pagenumbering{arabic}
 % Chinese
 	% CJK underdot - incompatible with beamer
-	\xeCJKsetup{underdot = {
-		boxdepth=0pt, format=\huge, depth=.3em
-	}}
+	\ifXeTeX
+		\xeCJKsetup{underdot = {
+			boxdepth=0pt, format=\huge, depth=.3em
+		}}
+	\fi
 	\newcommand{\cjkdot}[1]{\CJKunderdot{#1}}
 %	\DeclareTextFontCommand{\textbf}{\sffamily}
 % Toggles - etoolbox
