@@ -2,13 +2,13 @@
 	\def\hmmax{0}
 	\def\bmmax{0}
 % Utils
+	\PassOptionsToPackage{hyphens}{url} % before hyperref
 	\usepackage{hyperref} % set option with \hypersetup
 	\usepackage{uri} % \arxiv
 	\usepackage{ccicons} % creative commons
 	\usepackage[super]{nth} % nth superscript
 	\usepackage[datesep=/]{datetime2} % modify \today
 	\usepackage[space]{grffile} % file name fix
-%	\PassOptionsToPackage{hyphens}{url} % not useful?
 	\usepackage{etoolbox,environ,iftex}
 	\usepackage{chngcntr}
 %	\counterwithout{equation}{section}
@@ -18,6 +18,9 @@
 	\newcommand{\wikiref}[2]{\wiki{\href{#1}{#2}}}
 	\newcommand{\https}[1]{%
 		\href{https://#1}{\nolinkurl{#1}}%
+	}
+	\newcommand{\http}[1]{%
+		\href{http://#1}{\nolinkurl{#1}}%
 	}
 % Page
 	% parskip backup
