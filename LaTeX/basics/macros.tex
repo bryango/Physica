@@ -19,9 +19,18 @@
 \newcommand{\lvec}[1]{\overleftarrow{#1}}
 \newcommand{\sidenote}[1]{\textcolor{purple}{#1}}
 \newcommand{\mquote}[1]{\text{``$#1$''}}
+\newcommand{\thinmspace}{\mspace{\thinmuskip}}
+\newcommand{\moppower}[2]{\mop{{#1}^{#2}}\!}
 %
 % Physics
 \newcommand{\DD}{\mscr{D}}
+\newcommand{\normorder}[1]{
+	\mspace{.2\thinmuskip}%
+	{\mathopen {:}}%
+	{\thinmspace #1\thinmspace}%
+	{\mathclose {:}}%
+	\mspace{.5\thinmuskip}%
+}
 %
 % Differential Geometry
 \newcommand{\hodgedual}{\mop{\star}}
