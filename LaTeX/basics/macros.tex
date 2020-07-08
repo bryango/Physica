@@ -20,7 +20,7 @@
 \newcommand{\sidenote}[1]{\textcolor{purple}{#1}}
 \newcommand{\mquote}[1]{\text{``$#1$''}}
 \newcommand{\thinmspace}{\mspace{\thinmuskip}}
-\newcommand{\moppower}[2]{\mop{{#1}^{#2}}\!}
+\newcommand{\moppower}[2]{\mop{ {#1}^{#2} }\!}
 %
 % Physics
 \newcommand{\DD}{\mscr{D}}
@@ -47,9 +47,9 @@
 \newcommand{\subsetnormal}{\mathrel{\triangleleft}}
 %
 % QED
-\newcommand{\qed}[1][]{\hfill\ensuremath{%
+\newcommand{\qed}[1][]{\hfill\ensuremath{ %
     \square\mathrlap{_{\,#1}}%
 }}
-\newcommand{\qedfull}[1][]{\hfill\ensuremath{%
+\newcommand{\qedfull}[1][]{\hfill\ensuremath{ %
     \blacksquare\mathrlap{_{\,#1}}%
 }}
