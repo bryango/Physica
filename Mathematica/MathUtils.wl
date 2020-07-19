@@ -15,8 +15,8 @@ Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
 
 Global`wipeAll[context_: "Global`"] := (Quiet[
     # @@ Names[context ~~ "*" ~~ "`*" ...],
-    {ClearAll::wrsym, Remove::rmnsm, Remove::relex}
-] & /@ { ClearAll, Remove };);
+    {Remove::rmnsm, Remove::relex}
+] & /@ { Unprotect, Remove };);
 
 "## clear old definitions";
 Global`wipeAll["Utils`"];
@@ -28,8 +28,8 @@ Utils`prependContext[context_] := If[ ! MemberQ[$ContextPath, context],
 
 (* ::Section:: *)
 (* Auto Collapse *)
-(* Reference: <https://mathematica.stackexchange.com/a/683/65246> *)
 
+"## Reference: <https://mathematica.stackexchange.com/a/683/65246>";
 Utils`autoCollapse[] := Module[{
         selectionCache, nb = EvaluationNotebook[]
     },
@@ -58,11 +58,33 @@ Utils`hideInfo[info_, styles_: {}] := hideShow[
 
 
 (* ::Section:: *)
-(* Hold Items *)
+(* Misc tools *)
+
+Utils`Seq := Sequence;
 
 SetAttributes[Utils`holdItems, HoldAll]
 Utils`holdItems[list_] := ReleaseHold[
     MapAt[HoldForm, Hold[list], {All, All}]
+];
+
+"## from ccgrg";
+Utils`addAssumption[condition_ /; condition =!= False] :=
+Module[{restrict},
+    restrict = $Assumptions && condition;
+    $Assumptions = If[
+        Head[restrict] === And,
+        And @@ DeleteDuplicates[List @@ restrict],
+        restrict
+    ]
+];
+
+Utils`collectCoefficient[expr_, coefficient_, showForm_: Null] :=
+Module[{form = showForm, remaining},
+    If[MatrixQ[expr] && form == Null, form = MatrixForm];
+    If[form == Null, form = HoldForm@*Evaluate@*Simplify];
+    HoldForm[ HoldForm[coefficient] reduced ] /. {
+        reduced -> form[expr/coefficient]
+    }
 ];
 
 
@@ -197,10 +219,10 @@ End[] (* End `Private` *)
 EndPackage[]
 
 "### show public information";
-Column[{
-        Style[NotebookFileName[], Bold, Larger]
-        , Information["Utils`*"]
-    }
-    , Frame -> True, FrameStyle -> Transparent
-    (* , Spacings -> {Automatic, {2, 1}} *)
-] // hideShow
+If[ ! inspectUtils,
+    "DoNothing";
+    , ReleaseHold[#], ReleaseHold[#]
+] & @ Hold[
+    Print[Style[NotebookFileName[], Bold, Larger]];
+    Information["Utils`*"];
+]
