@@ -2,6 +2,9 @@
 (* ::Package:: *)
 (* Linked to `~/.Mathematica/Autoload/FrontEnd/init.m` *)
 
+"### Spelunking";
+Quiet[Get["Spelunking`"];];
+
 "### Add quit kernel shortcut";
 FrontEndExecute[
     FrontEnd`AddMenuCommands["MenuListQuitEvaluators", {MenuItem[

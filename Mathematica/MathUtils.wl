@@ -224,5 +224,5 @@ If[ ! inspectUtils,
     , ReleaseHold[#], ReleaseHold[#]
 ] & @ Hold[
     Print[Style[NotebookFileName[], Bold, Larger]];
-    Information["Utils`*"];
+    Information["Utils`*"]
 ]

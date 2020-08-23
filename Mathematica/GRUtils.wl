@@ -37,7 +37,7 @@ GRUtils`newMetric[
     )
 ) . # & @ (
       Dt[oldByNewFunc @@ newCoord]
-) // Simplify // quadToMatrix[#, newCoord] &;
+) // Simplify // GRUtils`quadToMatrix[#, newCoord] &;
 
 
 (* ::Section:: *)
@@ -89,7 +89,7 @@ If[ ! inspectUtils,
     "DoNothing";
     , ReleaseHold[#], ReleaseHold[#]
 ] & @ Hold[
-    Information["GRUtils`*"];
+    Information["GRUtils`*"]
 ]
 
 
