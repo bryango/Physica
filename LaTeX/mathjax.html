@@ -26,7 +26,7 @@ $ % Simple macros / shorthands for LaTeX,
 \newcommand{\moppower}[2]{\mop{ {#1}^{#2} }\!}
 %
 % Physics
-\newcommand{\DD}{\mscr{D}}
+\newcommand{\DD}[1]{\mathinner{\mscr{D}{#1}}}
 \newcommand{\normorder}[1]{
 	\mspace{.2\thinmuskip}%
 	{\mathopen {:}}%
@@ -72,7 +72,7 @@ $ % Simple macros / shorthands for LaTeX,
 %
 % physics
 \newcommand{\pqty}[1]{\left(#1\right)}
-\newcommand{\dd}[1]{\operatorname{d} #1}
+\newcommand{\dd}[2][]{\mathinner{\mathrm{d}^{#1}#2}}
 \newcommand{\dv}[2]{\frac{\dd{#1}}{\dd{#2}}}
 \newcommand{\pdv}[2]{\frac{\partial{#1}}{\partial{#2}}}
 %
