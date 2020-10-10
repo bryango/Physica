@@ -29,7 +29,6 @@
 		,hmargin=.135\paperwidth % 3cm
 	]{geometry}
 	\usepackage{changepage}
-%	\setlength{\headsep}{1.2\baselineskip}
 	% no widow
 	\usepackage[defaultlines=2,all]{nowidow}
 	\postdisplaypenalty=500
@@ -95,14 +94,21 @@
 	}
 % Header
 	\usepackage{fancyhdr,lastpage}
-%	\pagestyle{fancy}
-%	\fancyhf{} % clear default settings
+	\pagestyle{fancy}
+	\fancyhf{} % clear default settings
+	\setlength{\headsep}{1.2\baselineskip}
+	\cfoot{--\ \thepage\,/\,\pageref{LastPage}\ --}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+	%% simple headings style
+	\fancyhead[LO,RE]{\textsl{\textsc{\nouppercase{\leftmark}}}}
+	\fancyhead[RO,LE]{\thepage}
+%	%% fancy with logo
 %	\lhead{
 %		\hspace{.2em}
 %		% logo
 %		\vspace{-3ex}
 %	}
-%	\cfoot{--\ \thepage\,/\,\pageref{LastPage} \ --}
 %	\renewcommand{\headrulewidth}{0.1pt}
 %	\renewcommand{\headrule}{\ifnum\value{page}=1\relax\else
 %		\vbox to 2pt{\hbox to \headwidth{\dotfill}\vss}
