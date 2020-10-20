@@ -2,31 +2,5 @@
 *.pdf
 .fuse_hidden*
 
-# tex
-## Core latex/pdflatex auxiliary files:
-*.aux
-*.lof
-*.lot
-*.fls
-*.out
-*.toc
-*.fmt
-*.fot
-*.cb
-*.cb2
-.*.lb
-*.dvi
-*.xdv
-*.bbl
-*.bcf
-*.blg
-*-blx.aux
-*-blx.bib
-*.run.xml
-*.fdb_latexmk
-*.synctex
-*.synctex(busy)
-*.synctex.gz
-*.synctex.gz(busy)
-*.pdfsync
-_minted-*
+# ignore notebooks
+*.nb
