@@ -12,7 +12,8 @@ Notebook[
     {
         Cell[StyleData[StyleDefinitions -> "Default.nb"]],
         Cell[StyleData["Input"],  CellMargins -> {{80, 10}, {5, 8}}],
-        Cell[StyleData["Output"], CellMargins -> {{80, 10}, {5, 8}}]
+        Cell[StyleData["Output"], CellMargins -> {{80, 10}, {5, 8}}],
+        Cell[StyleData["Print"],  CellMargins -> {{80, Inherited}, {Inherited, Inherited}}]
     },
     StyleDefinitions -> "PrivateStylesheetFormatting.nb"
 ]
