@@ -5,6 +5,10 @@
 "### Spelunking";
 Quiet[Get["Spelunking`"];];
 
+"### Beep";
+$Post = (Beep[];(*Speak["Wow"];*)#) &;
+(* $Post =.; *)
+
 "### Add quit kernel shortcut";
 FrontEndExecute[
     FrontEnd`AddMenuCommands["MenuListQuitEvaluators", {MenuItem[

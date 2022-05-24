@@ -1,0 +1,19 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* Modifications to the `Default.nb` stylesheet *)
+(* Linked to      `$UserBaseDirectory/SystemFiles/FrontEnd/StyleSheets/Default.nb` *)
+(* See also   `$InstallationDirectory/SystemFiles/FrontEnd/StyleSheets/Default.nb` *)
+
+(* Beginning of Notebook Content *)
+Notebook[
+    {
+        Cell[StyleData[StyleDefinitions -> "Default.nb"]],
+        Cell[StyleData["Input"],  CellMargins -> {{80, 10}, {5, 8}}],
+        Cell[StyleData["Output"], CellMargins -> {{80, 10}, {5, 8}}]
+    },
+    StyleDefinitions -> "PrivateStylesheetFormatting.nb"
+]
+(* End of Notebook Content *)

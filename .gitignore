@@ -4,3 +4,5 @@
 
 # ignore notebooks
 *.nb
+# ... except for the stylesheet
+!Default.nb
