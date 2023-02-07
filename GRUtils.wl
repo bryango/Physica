@@ -1,7 +1,7 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 (* For an up-to-date version, go to:
-    https://github.com/bryango/Templates > Mathematica
+    https://github.com/bryango/Physica
 *)
 
 BeginPackage["GRUtils`"]
@@ -43,7 +43,7 @@ GRUtils`newMetric[
 (* ::Section:: *)
 (* Other utils *)
 
-"## sum over component labels;"
+"## sum over component labels";
 GRUtils`labelContract[indices__] := Function[tensor,
     Fold[
         Sum[#1, {#2, 1, dim}] &

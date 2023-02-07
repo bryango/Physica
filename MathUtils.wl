@@ -1,7 +1,7 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 (* For an up-to-date version, go to:
-    https://github.com/bryango/Templates > Mathematica
+    https://github.com/bryango/Physica
 *)
 
 BeginPackage["Utils`"]
@@ -217,6 +217,14 @@ Utils`printName[var_] := Print[{
 
 End[] (* End `Private` *)
 EndPackage[]
+
+"### reasonable options";
+SetOptions[Language`ExtendedDefinition, ExcludedContexts -> {}]
+Quiet[
+    SetOptions[Solve, Assumptions -> True];
+    SetOptions[Language`ExtendedDefinition, ExcludedContexts -> {}],
+    {SetOptions::optnf}
+];
 
 "### show public information";
 If[ ! inspectUtils,
