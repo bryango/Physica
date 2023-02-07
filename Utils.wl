@@ -50,26 +50,6 @@ Utils`hideInfo[info_, styles_: {}] := hideShow[
 
 
 (* ::Section:: *)
-(* Misc tools *)
-
-
-SetAttributes[Utils`holdItems, HoldAll]
-Utils`holdItems[list_] := ReleaseHold[
-    MapAt[HoldForm, Hold[list], {All, All}]
-];
-
-
-Utils`collectCoefficient[expr_, coefficient_, showForm_: Null] :=
-Module[{form = showForm, remaining},
-    If[MatrixQ[expr] && form == Null, form = MatrixForm];
-    If[form == Null, form = HoldForm@*Evaluate@*Simplify];
-    HoldForm[ HoldForm[coefficient] reduced ] /. {
-        reduced -> form[expr/coefficient]
-    }
-];
-
-
-(* ::Section:: *)
 (* Plot Utils *)
 
 Utils`colorPalette[theme_] := (
@@ -128,51 +108,6 @@ Utils`manipulateGif[manipulate_, name_String, step_Integer] := Export[
     ][[1 ;; -1 ;; step]]
 ];
 
-Utils`saveScript[] := FrontEndExecute[
-    FrontEndToken[EvaluationNotebook[], "Save", {
-        NotebookDirectory[] <> FileBaseName[NotebookFileName[]] <> ".wl",
-        "Script"
-    }]
-];
-
-"## generate LaTeX math expressions";
-Utils`toLaTeX[expr_] := expr \
-    // TraditionalForm \
-    // ExportString[#, "TeXFragment"] & \
-    // StringTrim[#] & \
-    // StringDelete[RegularExpression["^\\\\\[|\\\\\]$"]];
-
-
-(* ::Section:: *)
-(* Mathematics *)
-
-"## check if expression is function";
-"## ... reference: <https://stackoverflow.com/a/3748658/10829731>";
-Utils`functionQ[
-    _Function | _InterpolatingFunction | _CompiledFunction
-] = True;
-functionQ[f_Symbol] := Or[
-    DownValues[f] =!= {},
-    MemberQ[Attributes[f], NumericFunction]
-];
-functionQ[_] = False;
-
-"## simplify functional expressions";
-Utils`fSimplify[ expr_Function | expr_Composition ] := Module[{
-    func = expr
-},
-    While[Head[func] =!= Function,
-        If[Head[func] =!= Composition,
-            Message[fSimplify::notfunc, func];
-            Abort[];
-        ];
-        func = func // Last;
-    ];
-    Function[Evaluate[Simplify[
-        (expr) @@ (Slot /@ Range[Length[func[[1]]]])
-    ]]]
-];
-fSimplify::notfunc = "`1` is not a Function or a Composition of Functions."
 
 (* ::Section:: *)
 (* Inspections *)
@@ -199,13 +134,6 @@ Utils`printName[var_] := Print[{
 End[] (* End `Private` *)
 EndPackage[]
 
-"### reasonable options";
-SetOptions[Language`ExtendedDefinition, ExcludedContexts -> {}]
-Quiet[
-    SetOptions[Solve, Assumptions -> True];
-    SetOptions[Language`ExtendedDefinition, ExcludedContexts -> {}],
-    {SetOptions::optnf}
-];
 
 "### show public information";
 If[ ! inspectUtils,
