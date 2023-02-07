@@ -4,12 +4,8 @@
 (*GRUtils*)
 
 
-(* ::Text:: *)
+(* ::Subtitle:: *)
 (*For an up-to-date version, go to https://github.com/bryango/Physica*)
-
-
-(* ::Section:: *)
-(*Basics*)
 
 
 lengthToMetric = Function[ {quadraticForm, coord},
@@ -19,38 +15,20 @@ lengthToMetric = Function[ {quadraticForm, coord},
     ]
 ];
 
+metricToLength = Function[ {metric, coord},
+    Dt[coord] . metric . Dt[coord]
+];
 
 
-(* ::Section:: *)
-(* Coord transform *)
-
-
-jacobianFromMap = Function[ {oldByNewMap, newCoord},
+jacobianFromMap = Function[ {upByDownMap, downCoord},
     Grad @@ (
-        { oldByNewMap @@ #, # } & @ newCoord
+        { upByDownMap @@ #, # } & @ downCoord
     )
 ];
 
 jacobian := jacobianFromMap;
 
-newMetric[
-    oldMetric_List, oldCoord_List,
-    oldByNewMap_, newCoord_List
-] := # . (
-    oldMetric /. (
-        #1 -> #2 & @@@
-        Transpose[{oldCoord, oldByNewMap @@ newCoord}]
-    )
-) . # & @ (
-      Dt[oldByNewMap @@ newCoord]
-) // Simplify // lengthToMetric[#, newCoord] &;
 
-
-(* ::Section:: *)
-(* Other utils *)
-
-
-"## sum over component labels";
 labelContract[indices__] := Function[tensor,
     Fold[
         Sum[#1, {#2, 1, dim}] &
@@ -58,9 +36,6 @@ labelContract[indices__] := Function[tensor,
         , {indices}
     ]
 ];
-
-
-
 
 
 (* vim: set ts=4 sw=4: *)
