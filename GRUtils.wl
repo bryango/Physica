@@ -37,7 +37,7 @@ GRUtils`newMetric[
     )
 ) . # & @ (
       Dt[oldByNewFunc @@ newCoord]
-) // Simplify // GRUtils`quadToMatrix[#, newCoord] &;
+) // Simplify // lengthToMetric[#, newCoord] &;
 
 
 (* ::Section:: *)
@@ -53,28 +53,11 @@ GRUtils`labelContract[indices__] := Function[tensor,
 ];
 
 
-"## finds the metric tensor for a quadratic form";
-"## ... reference: ccgrg";
-GRUtils`quadToMatrix[form_, variables_] := Module[{
-        Dx = Dt /@ variables,
-        dimension = Length[variables],
-        g, gArray, entries
-    },
-	gArray = Array[g, {dimension, dimension}];
-    g[i_,k_] := g[k,i] /; k<i;
-	entries = DeleteDuplicates[Flatten[gArray]];
-
-    linearSystem = ( # == 0 ) &@ DeleteCases[
-        Flatten[CoefficientList[
-            Simplify[form] - Simplify[Dx.gArray.Dx],
-            Dx
-        ]],
-        0 (* remove trivial equations *)
-    ];
-	gArray = gArray /. Flatten[
-        Solve[linearSystem, entries]
-    ];
-	Simplify[gArray]
+lengthToMetric = Function[ {quadraticForm, coord},
+    Table[
+        (1/2) D[quadraticForm, Dt[i], Dt[j]],
+        {i, coord}, {j, coord}
+    ]
 ];
 
 
