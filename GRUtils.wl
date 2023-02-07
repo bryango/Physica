@@ -1,41 +1,54 @@
-#!/usr/bin/env wolframscript
 (* ::Package:: *)
-(* For an up-to-date version, go to:
-    https://github.com/bryango/Physica
-*)
+
+(* ::Title:: *)
+(*GRUtils*)
+
+
+(* ::Text:: *)
+(*For an up-to-date version, go to https://github.com/bryango/Physica*)
+
+
+(* ::Section:: *)
+(*Basics*)
+
+
+lengthToMetric = Function[ {quadraticForm, coord},
+    Table[
+        (1/2) D[quadraticForm, Dt[i], Dt[j]],
+        {i, coord}, {j, coord}
+    ]
+];
+
+
 
 (* ::Section:: *)
 (* Coord transform *)
 
-jacobianFromLists[
-    up_List, down_List
-] := Outer[
-    D[ up[[#1]], down[[#2]] ] &,
-    Range[Length[up]], Range[Length[down]]
+
+jacobianFromMap = Function[ {oldByNewMap, newCoord},
+    Grad @@ (
+        { oldByNewMap @@ #, # } & @ newCoord
+    )
 ];
 
-jacobianFromFunc[oldByNewFunc_, newCoord_List] :=
-jacobianFromLists @@ (
-    { oldByNewFunc @@ #, # } & @ newCoord
-);
-
-jacobian := jacobianFromFunc;
+jacobian := jacobianFromMap;
 
 newMetric[
     oldMetric_List, oldCoord_List,
-    oldByNewFunc_, newCoord_List
+    oldByNewMap_, newCoord_List
 ] := # . (
     oldMetric /. (
         #1 -> #2 & @@@
-        Transpose[{oldCoord, oldByNewFunc @@ newCoord}]
+        Transpose[{oldCoord, oldByNewMap @@ newCoord}]
     )
 ) . # & @ (
-      Dt[oldByNewFunc @@ newCoord]
+      Dt[oldByNewMap @@ newCoord]
 ) // Simplify // lengthToMetric[#, newCoord] &;
 
 
 (* ::Section:: *)
 (* Other utils *)
+
 
 "## sum over component labels";
 labelContract[indices__] := Function[tensor,
@@ -47,12 +60,7 @@ labelContract[indices__] := Function[tensor,
 ];
 
 
-lengthToMetric = Function[ {quadraticForm, coord},
-    Table[
-        (1/2) D[quadraticForm, Dt[i], Dt[j]],
-        {i, coord}, {j, coord}
-    ]
-];
+
 
 
 (* vim: set ts=4 sw=4: *)
