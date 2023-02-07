@@ -1,25 +1,31 @@
-#!/usr/bin/env wolframscript
 (* ::Package:: *)
-(* For an up-to-date version, go to:
-    https://github.com/bryango/Physica
-*)
 
-BeginPackage["Utils`"]
-`Private`packageName = Context[];
+(* ::Title:: *)
+(*MathUtils*)
 
-Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
+
+(* ::Subtitle:: *)
+(*For an up-to-date version, go to: https://github.com/bryango/Physica*)
+
+
+addAssumptions = Catch[
+    If[Simplify[And @@ ##], Throw[$Assumptions]];
+    $Assumptions = Simplify[
+        $Assumptions && And @@ ##,
+        Assumptions -> True
+    ]
+] &;
 
 
 (* ::Section:: *)
 (* Context Management *)
 
-Global`wipeAll[context_: "Global`"] := (Quiet[
+
+wipeAll[context_: "Global`"] := (Quiet[
     # @@ Names[context ~~ "*" ~~ "`*" ...],
     {Remove::rmnsm, Remove::relex}
 ] & /@ { Unprotect, Remove };);
 
-"## clear old definitions";
-Global`wipeAll["Utils`"];
 
 prependContext[context_] := If[ ! First @ $ContextPath == context,
     PrependTo[$ContextPath, context];
@@ -28,6 +34,7 @@ prependContext[context_] := If[ ! First @ $ContextPath == context,
 
 (* ::Section:: *)
 (* Auto Collapse *)
+
 
 "## Reference: <https://mathematica.stackexchange.com/a/683/65246>";
 Utils`autoCollapse[] := Module[{
@@ -66,13 +73,7 @@ Utils`holdItems[list_] := ReleaseHold[
     MapAt[HoldForm, Hold[list], {All, All}]
 ];
 
-addAssumptions = Catch[
-    If[Simplify[And @@ ##], Throw[$Assumptions]];
-    $Assumptions = Simplify[
-        $Assumptions && And @@ ##,
-        Assumptions -> True
-    ]
-] &;
+
 
 Utils`collectCoefficient[expr_, coefficient_, showForm_: Null] :=
 Module[{form = showForm, remaining},
@@ -86,6 +87,7 @@ Module[{form = showForm, remaining},
 
 (* ::Section:: *)
 (* Plot Utils *)
+
 
 Utils`colorPalette[theme_] := (
     ("DefaultPlotStyle" /. (
@@ -112,6 +114,7 @@ Utils`exportPlot[plot_, dir_: "plots/"] := Export[
 
 (* ::Section:: *)
 (* Import & Export *)
+
 
 Utils`importNotebook[path_, open_: False] := Module[{
         nb, nbPath, context, action
@@ -161,6 +164,7 @@ Utils`toLaTeX[expr_] := expr \
 (* ::Section:: *)
 (* Mathematics *)
 
+
 "## check if expression is function";
 "## ... reference: <https://stackoverflow.com/a/3748658/10829731>";
 Utils`functionQ[
@@ -189,8 +193,11 @@ Utils`fSimplify[ expr_Function | expr_Composition ] := Module[{
 ];
 fSimplify::notfunc = "`1` is not a Function or a Composition of Functions."
 
+
+
 (* ::Section:: *)
 (* Inspections *)
+
 
 "## show exec time & pass output";
 SetAttributes[Utils`timeExec, {HoldAll, SequenceHold}];
@@ -211,8 +218,6 @@ Utils`printName[var_] := Print[{
 (* ::Section:: *)
 (* Ending *)
 
-End[] (* End `Private` *)
-EndPackage[]
 
 "### reasonable options";
 SetOptions[Language`ExtendedDefinition, ExcludedContexts -> {}]

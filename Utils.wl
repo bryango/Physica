@@ -1,8 +1,9 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
-(* For an up-to-date version, go to:
-    https://github.com/bryango/Physica
-*)
+(* For an up-to-date version, go to: https://github.com/bryango/Physica *)
+
+
+<< "Physica/MathUtils.wl"
 
 BeginPackage["Utils`"]
 `Private`packageName = Context[];
@@ -13,17 +14,8 @@ Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
 (* ::Section:: *)
 (* Context Management *)
 
-Global`wipeAll[context_: "Global`"] := (Quiet[
-    # @@ Names[context ~~ "*" ~~ "`*" ...],
-    {Remove::rmnsm, Remove::relex}
-] & /@ { Unprotect, Remove };);
-
-"## clear old definitions";
-Global`wipeAll["Utils`"];
-
-prependContext[context_] := If[ ! First @ $ContextPath == context,
-    PrependTo[$ContextPath, context];
-];
+"## clear old definitions, from MathUtils`";
+wipeAll["Utils`"];
 
 
 (* ::Section:: *)
@@ -66,13 +58,6 @@ Utils`holdItems[list_] := ReleaseHold[
     MapAt[HoldForm, Hold[list], {All, All}]
 ];
 
-addAssumptions = Catch[
-    If[Simplify[And @@ ##], Throw[$Assumptions]];
-    $Assumptions = Simplify[
-        $Assumptions && And @@ ##,
-        Assumptions -> True
-    ]
-] &;
 
 Utils`collectCoefficient[expr_, coefficient_, showForm_: Null] :=
 Module[{form = showForm, remaining},
