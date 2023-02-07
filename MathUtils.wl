@@ -21,7 +21,7 @@ Global`wipeAll[context_: "Global`"] := (Quiet[
 "## clear old definitions";
 Global`wipeAll["Utils`"];
 
-Utils`prependContext[context_] := If[ ! MemberQ[$ContextPath, context],
+prependContext[context_] := If[ ! First @ $ContextPath == context,
     PrependTo[$ContextPath, context];
 ];
 
@@ -60,23 +60,19 @@ Utils`hideInfo[info_, styles_: {}] := hideShow[
 (* ::Section:: *)
 (* Misc tools *)
 
-Utils`Seq := Sequence;
 
 SetAttributes[Utils`holdItems, HoldAll]
 Utils`holdItems[list_] := ReleaseHold[
     MapAt[HoldForm, Hold[list], {All, All}]
 ];
 
-"## from ccgrg";
-Utils`addAssumption[condition_ /; condition =!= False] :=
-Module[{restrict},
-    restrict = $Assumptions && condition;
-    $Assumptions = If[
-        Head[restrict] === And,
-        And @@ DeleteDuplicates[List @@ restrict],
-        restrict
+addAssumptions = Catch[
+    If[Simplify[And @@ ##], Throw[$Assumptions]];
+    $Assumptions = Simplify[
+        $Assumptions && And @@ ##,
+        Assumptions -> True
     ]
-];
+] &;
 
 Utils`collectCoefficient[expr_, coefficient_, showForm_: Null] :=
 Module[{form = showForm, remaining},

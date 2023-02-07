@@ -62,7 +62,7 @@ SetAttributes[noGlobalBlock, HoldAll];
 noGlobalBlock[expr_] := Block[
     {
         (*(*(* avoid polluting the Global` context *)*)*)
-        $ContextPath = DeleteCases["Global`"]@$ContextPath
+        $ContextPath = DeleteCases["Global`"] @ $ContextPath
     },
     expr
 ];
@@ -74,7 +74,7 @@ contextBlock[context_, expr_] := Quiet[
         Block[
             {
                 (*(*(* context` symbols take precedence *)*)*)
-                $ContextPath = Prepend[context]@$ContextPath,
+                $ContextPath = Prepend[context] @ $ContextPath,
                 
                 (*(*(* new symbols defined in context` *)*)*)
                 $Context = context,
