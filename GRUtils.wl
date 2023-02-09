@@ -29,6 +29,7 @@ jacobianFromMap = Function[ {upByDownMap, downCoord},
 jacobian := jacobianFromMap;
 
 
+ClearAll @ labelContract
 labelContract[indices__] := Function[tensor,
     Fold[
         Sum[#1, {#2, 1, dim}] &

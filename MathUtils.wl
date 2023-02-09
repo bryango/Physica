@@ -24,12 +24,28 @@ Quiet[
 
 
 addAssumptions = Catch[
-    If[Simplify[And @@ ##], Throw[$Assumptions]];
+    If[Simplify[And @@ {##}], Throw[$Assumptions]];
     $Assumptions = Simplify[
-        $Assumptions && And @@ ##,
+        $Assumptions && And @@ {##},
         Assumptions -> True
     ]
 ] &;
+
+
+ClearAll[redify]
+MakeBoxes[redify[x_], StandardForm] ^:= ToBoxes[Style[x, Red]]
+unred = ReplaceAll[redify -> (# &)];
+
+
+ClearAll[unNest]
+unNest[f_ : List] := ReplaceRepeated[f@f@x___ :> f@x]
+unpack := ReplaceAll[ {x_} :> x ] @* unNest[List]
+
+
+ClearAll[actOnNumeratorDenominator, depressMinus]
+actOnNumeratorDenominator[func_] := 
+ Apply[#1/#2 &]@*func@*NumeratorDenominator
+depressMinus := (-# &)@*actOnNumeratorDenominator[Apply[{-#1, #2} &]]
 
 
 SetAttributes[holdItems, HoldAll]
@@ -46,35 +62,6 @@ Module[{form = showForm, remaining},
         reduced -> form[expr/coefficient]
     }
 ];
-
-
-"## check if expression is function";
-"## ... reference: <https://stackoverflow.com/a/3748658/10829731>";
-functionQ[
-    _Function | _InterpolatingFunction | _CompiledFunction
-] = True;
-functionQ[f_Symbol] := Or[
-    DownValues[f] =!= {},
-    MemberQ[Attributes[f], NumericFunction]
-];
-functionQ[_] = False;
-
-"## simplify functional expressions";
-fSimplify[ expr_Function | expr_Composition ] := Module[{
-    func = expr
-},
-    While[Head[func] =!= Function,
-        If[Head[func] =!= Composition,
-            Message[fSimplify::notfunc, func];
-            Abort[];
-        ];
-        func = func // Last;
-    ];
-    Function[Evaluate[Simplify[
-        (expr) @@ (Slot /@ Range[Length[func[[1]]]])
-    ]]]
-];
-fSimplify::notfunc = "`1` is not a Function or a Composition of Functions."
 
 
 (* ::Section:: *)
@@ -132,3 +119,34 @@ SetAttributes[printName, HoldAll];
 printName[var_] := Print[{
     SymbolName[Unevaluated[var]], var
 }];
+
+tocShow := (
+    tocNotebook = ExpressionCell[
+        Button[
+            DisplayForm @ NotebookRead @ #,
+            SelectionMove[#, Before, Cell],
+            Appearance -> "Palette"
+        ],
+        CurrentValue[#, CellStyle]
+    ] & /@ (
+        Cells[ CellStyle -> {
+            "Title", "Chapter", "Section", "Subsection", "Subsubsection"
+        } ] /. Rule[CellChangeTimes, _] :> Sequence[]
+    ) // CreateDocument[
+        {
+            Cell["Table of Contents", "Title"],
+            ExpressionCell[Style[NotebookFileName[], "Output"], "Subtitle"]
+        } ~ Join ~ #,
+
+        If[ Head[tocNotebook] === NotebookObject
+                && NotebookInformation @ tocNotebook =!= $Failed,
+            tocNotebook,
+            Unevaluated@Sequence[]
+        ],
+        FrontEnd`ClosingSaveDialog -> False,
+        WindowTitle -> "Table of Contents",
+        WindowSelected -> True
+    ] &;
+    SelectionMove[tocNotebook, Before, Notebook];
+    tocNotebook
+)
