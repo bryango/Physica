@@ -119,34 +119,3 @@ SetAttributes[printName, HoldAll];
 printName[var_] := Print[{
     SymbolName[Unevaluated[var]], var
 }];
-
-tocShow := (
-    tocNotebook = ExpressionCell[
-        Button[
-            DisplayForm @ NotebookRead @ #,
-            SelectionMove[#, Before, Cell],
-            Appearance -> "Palette"
-        ],
-        CurrentValue[#, CellStyle]
-    ] & /@ (
-        Cells[ CellStyle -> {
-            "Title", "Chapter", "Section", "Subsection", "Subsubsection"
-        } ] /. Rule[CellChangeTimes, _] :> Sequence[]
-    ) // CreateDocument[
-        {
-            Cell["Table of Contents", "Title"],
-            ExpressionCell[Style[NotebookFileName[], "Output"], "Subtitle"]
-        } ~ Join ~ #,
-
-        If[ Head[tocNotebook] === NotebookObject
-                && NotebookInformation @ tocNotebook =!= $Failed,
-            tocNotebook,
-            Unevaluated@Sequence[]
-        ],
-        FrontEnd`ClosingSaveDialog -> False,
-        WindowTitle -> "Table of Contents",
-        WindowSelected -> True
-    ] &;
-    SelectionMove[tocNotebook, Before, Notebook];
-    tocNotebook
-)
