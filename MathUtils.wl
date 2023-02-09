@@ -43,9 +43,9 @@ unpack := ReplaceAll[ {x_} :> x ] @* unNest[List]
 
 
 ClearAll[actOnNumeratorDenominator, depressMinus]
-actOnNumeratorDenominator[func_] := 
- Apply[#1/#2 &]@*func@*NumeratorDenominator
-depressMinus := (-# &)@*actOnNumeratorDenominator[Apply[{-#1, #2} &]]
+actOnNumeratorDenominator[func_] :=
+    Apply[#1/#2 &] @* func @* NumeratorDenominator
+depressMinus := (-# &) @* actOnNumeratorDenominator[Apply[{-#1, #2} &]]
 
 
 SetAttributes[holdItems, HoldAll]
@@ -55,9 +55,11 @@ holdItems[list_] := ReleaseHold[
 
 
 collectCoefficient[expr_, coefficient_, showForm_: Null] :=
-Module[{form = showForm, remaining},
-    If[MatrixQ[expr] && form == Null, form = MatrixForm];
-    If[form == Null, form = HoldForm@*Evaluate@*Simplify];
+Module[{form = showForm, reduced},
+    If[form == Null,
+        form = HoldForm@*Evaluate@*Simplify;
+        If[ MatrixQ[expr], form = MatrixForm ];
+    ];
     HoldForm[ HoldForm[coefficient] reduced ] /. {
         reduced -> form[expr/coefficient]
     }
@@ -68,16 +70,33 @@ Module[{form = showForm, remaining},
 (* Context Management *)
 
 
-wipeAll[context_: "Global`"] := (Quiet[
+wipeAll[context_: "Global`"] := Quiet[
     # @@ Names[context ~~ "*" ~~ "`*" ...],
     {Remove::rmnsm, Remove::relex}
-] & /@ { Unprotect, Remove };);
+] & /@ { Unprotect, Remove }
 
 
 prependContext[context_] := If[ ! First @ $ContextPath == context,
     PrependTo[$ContextPath, context];
 ];
 
+
+(* ::Section:: *)
+(* Inspections *)
+
+
+SetAttributes[printName, HoldAll];
+printName[var_] := Print[{
+    SymbolName[Unevaluated[var]], var
+}]
+
+
+(*(*(* show exec time & pass output *)*)*)
+SetAttributes[timeExec, {HoldAll, SequenceHold}];
+timeExec[operations__] := (
+   Print[Now];
+   (Print[#1]; #2) & @@ Timing[operations]
+);
 
 
 (* ::Section:: *)
@@ -97,25 +116,3 @@ toLaTeX[expr_] := expr \
     // ExportString[#, "TeXFragment"] & \
     // StringTrim[#] & \
     // StringDelete[RegularExpression["^\\\\\[|\\\\\]$"]];
-
-
-(* ::Section:: *)
-(* Inspections *)
-
-
-"## show exec time & pass output";
-SetAttributes[timeExec, {HoldAll, SequenceHold}];
-timeExec[operations__] := (
-   Print[Now];
-   (Print[#1]; #2) & @@ Timing[operations]
-);
-
-
-printPrevious[printCmd_: Identity] := Print[% // printCmd];
-
-
-"## inspect variable";
-SetAttributes[printName, HoldAll];
-printName[var_] := Print[{
-    SymbolName[Unevaluated[var]], var
-}];
