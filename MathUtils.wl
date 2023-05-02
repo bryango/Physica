@@ -25,10 +25,7 @@ Quiet[
 
 addAssumptions = Catch[
     If[Simplify[And @@ {##}], Throw[$Assumptions]];
-    $Assumptions = Simplify[
-        $Assumptions && And @@ {##},
-        Assumptions -> True
-    ]
+    $Assumptions = $Assumptions && Simplify[And @@ {##}]
 ] &;
 
 
@@ -66,6 +63,10 @@ Module[{form = showForm, reduced},
 ];
 
 
+ClearAll[fixed];
+fixed[f_] := FixedPoint[f, ##] &
+
+
 (* ::Section:: *)
 (* Context Management *)
 
@@ -85,10 +86,13 @@ prependContext[context_] := If[ ! First @ $ContextPath == context,
 (* Inspections *)
 
 
-echoIn = Function[ input,
-    EchoFunction[HoldForm][Unevaluated @ input],
-    HoldAll
+echoWith = Function[echoFunction,
+    Function[input,
+        EchoFunction[echoFunction][Unevaluated@input],
+        HoldAll
+    ]
 ];
+echoIn = echoWith[HoldForm];
 
 
 SetAttributes[printName, HoldAll];

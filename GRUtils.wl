@@ -8,6 +8,23 @@
 (*For an up-to-date version, go to https://github.com/bryango/Physica*)
 
 
+(* ::Item:: *)
+(*Pretty-differentials:*)
+
+
+(* ::Subitem:: *)
+(*The pretty-printing is tagged to `MakeBoxes`, not `Dt`*)
+
+
+(* ::Subitem:: *)
+(*... because `Dt` is a Protected Symbol*)
+
+
+ClearAll[DifferentialD]
+MakeBoxes[Dt[x_], StandardForm] := RowBox @ {"\[DifferentialD]", ToBoxes[x]}
+DifferentialD := Dt
+
+
 lengthToMetric = Function[ {quadraticForm, coord},
     Table[
         (1/2) D[quadraticForm, Dt[i], Dt[j]],
