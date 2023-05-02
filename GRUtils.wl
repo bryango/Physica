@@ -25,6 +25,20 @@ MakeBoxes[Dt[x_], StandardForm] := RowBox @ {"\[DifferentialD]", ToBoxes[x]}
 DifferentialD := Dt
 
 
+(* ::Item:: *)
+(*Experimental: Make \[TensorWedge] work for abstract tensors:*)
+
+
+(*
+TensorWedge;  (*(*(* trigger system default autoload *)*)*)
+Unprotect[TensorWedge];
+    TensorWedge[x_ + y_, z_] := TensorWedge[x, z] + TensorWedge[y, z]
+    TensorWedge /: TensorWedge[x_, y_] + TensorWedge[y_, x_] := 0
+    (* SetAttributes[TensorWedge, ReadProtected]; *)
+Protect[TensorWedge];
+*)
+
+
 lengthToMetric = Function[ {quadraticForm, coord},
     Table[
         (1/2) D[quadraticForm, Dt[i], Dt[j]],

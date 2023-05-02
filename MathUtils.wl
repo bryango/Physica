@@ -18,6 +18,28 @@ Quiet[
     {SetOptions::optnf}
 ];
 
+If[$Notebooks, SetDirectory@NotebookDirectory[]]
+(* SetOptions[EvaluationNotebook[], Magnification -> .9] *)
+(* Options[EvaluationNotebook[], CellContext] *)
+
+(* Off[Limit::alimv] *)
+
+
+(* ::Item:: *)
+(*Piecewise defaults to Indeterminate:*)
+
+
+Unprotect[Piecewise];
+    Piecewise[a_List] := Piecewise[a, Indeterminate];
+    Piecewise /: Default[Piecewise, 2] := Indeterminate;
+Protect[Piecewise];
+
+
+(* ::Subitem:: *)
+(*Note that Default[Piecewise, 2] := Indeterminate doesn't actually work,*)
+(*... as Piecewise[___] is a kernel function.*)
+(*But we set it anyways for consistency.*)
+
 
 (* ::Section:: *)
 (* Mathematics *)
@@ -52,14 +74,15 @@ holdItems[list_] := ReleaseHold[
 
 
 collectCoefficient[expr_, coefficient_, showForm_: Null] :=
-Module[{form = showForm, reduced},
-    If[form == Null,
-        form = HoldForm@*Evaluate@*Simplify;
-        If[ MatrixQ[expr], form = MatrixForm ];
-    ];
-    HoldForm[ HoldForm[coefficient] reduced ] /. {
-        reduced -> form[expr/coefficient]
+Module[{form = showForm, remaining},
+    If[MatrixQ[expr] && form == Null, form = MatrixForm];
+    If[form == Null, form = HoldForm @* Evaluate @* Simplify];
+    HoldForm[ HoldForm[coefficient] remaining ] /. {
+        remaining -> form[expr/coefficient]
     }
+];
+
+
 ];
 
 
@@ -95,6 +118,15 @@ echoWith = Function[echoFunction,
 echoIn = echoWith[HoldForm];
 
 
+(* ::Item:: *)
+(*Post-processing / pretty-printing:*)
+
+
+ClearAll[pp]
+pp[ style_: Map @ MatrixForm, op_: FullSimplify] :=
+    op /* EchoFunction[style];
+
+
 SetAttributes[printName, HoldAll];
 printName[var_] := Print[{
     SymbolName[Unevaluated[var]], var
@@ -111,6 +143,18 @@ timeExec[operations__] := (
 
 (* ::Section:: *)
 (* Import & Export *)
+
+
+ClearAll[getNotebook]
+getNotebook[nbFile__] := NotebookEvaluate[
+    NotebookOpen[
+        FileNames[nbFile] // Sort // Last // FindFile,
+        CellContext -> "Global`"
+    ],
+    InsertResults -> True,
+    EvaluationElements -> "InitializationCell"
+]
+(*(*(* https://mathematica.stackexchange.com/a/111850 *)*)*)
 
 
 saveScript[] := FrontEndExecute[
