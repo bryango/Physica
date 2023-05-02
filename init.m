@@ -4,8 +4,9 @@
 
 "### Spelunking";
 Quiet[Get["Spelunking`"];];
-Quiet[Get["GeneralUtilities`"];];
 
+(*
+Quiet[Get["GeneralUtilities`"];];
 Unprotect[GeneralUtilities`Definitions];
 GeneralUtilities`Definitions[
     GeneralUtilities`Code`PackagePrivate`sym_Symbol
@@ -26,6 +27,8 @@ GeneralUtilities`Definitions[
     {}
 ];
 Protect[GeneralUtilities`Definitions];
+*)
+
 SetOptions[Language`ExtendedDefinition, ExcludedContexts -> {}];
 SetOptions[Language`ExtendedFullDefinition, ExcludedContexts -> {}];
 
