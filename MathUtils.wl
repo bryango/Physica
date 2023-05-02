@@ -85,6 +85,12 @@ prependContext[context_] := If[ ! First @ $ContextPath == context,
 (* Inspections *)
 
 
+echoIn = Function[ input,
+    EchoFunction[HoldForm][Unevaluated @ input],
+    HoldAll
+];
+
+
 SetAttributes[printName, HoldAll];
 printName[var_] := Print[{
     SymbolName[Unevaluated[var]], var

@@ -1,21 +1,27 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
+(* Utils for Mathematica *)
 (* For an up-to-date version, go to: https://github.com/bryango/Physica *)
 
 
+(* ::Section:: *)
+(* Dependencies *)
+
 << "Physica/MathUtils.wl"
-
-BeginPackage["Utils`"]
-`Private`packageName = Context[];
-
-Begin["`Private`"] (* Un-scoped variables defaults to `Private` *)
 
 
 (* ::Section:: *)
 (* Context Management *)
 
-"## clear old definitions, from MathUtils`";
+(*(*(* clear old definitions, using MathUtils`wipeall *)*)*)
 wipeAll["Utils`"];
+
+
+BeginPackage["Utils`"]
+`Private`packageName = Context[];
+
+(*(*(* un-scoped variables defaults to `Private` *)*)*)
+Begin["`Private`"]
 
 
 (* ::Section:: *)
