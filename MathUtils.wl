@@ -41,6 +41,14 @@ Protect[Piecewise];
 (*But we set it anyways for consistency.*)
 
 
+(* ::Item:: *)
+(*Allows Subscript-ing defined symbols:*)
+
+
+ClearAll[Subscript]
+SetAttributes[Subscript, HoldFirst]
+
+
 (* ::Section:: *)
 (* Mathematics *)
 
