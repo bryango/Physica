@@ -234,6 +234,27 @@ timeExec[operations__] := (
 );
 
 
+ClearAll[printAs]
+SetAttributes[printAs, HoldAll]
+
+printAs[symbol_Symbol, expr_, tag_Symbol] := (
+    ClearAll[symbol, tag];
+    tag /: expr = symbol;
+    symbol /: MakeBoxes[symbol, StandardForm] = MakeBoxes[expr];
+)
+
+printAs[symbol_Symbol, expr_Symbol] := printAs[symbol, expr, expr]
+
+printAs[symbol_Symbol, expr_] := With[
+    {
+        (*(*(* symbol at the first leaf, unevaluated *)*)*)
+        tag = ExpressionTree[Hold@expr, "HeldAtoms"] // TreeLeaves //
+                First // TreeData // Apply@Unevaluated
+    },
+    printAs[symbol, expr, tag]
+]
+
+
 (* ::Section:: *)
 (* Import & Export *)
 
