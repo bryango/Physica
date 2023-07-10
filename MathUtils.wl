@@ -183,6 +183,13 @@ ClearAll[fixed];
 fixed[f_] := FixedPoint[f, ##] &
 
 
+ClearAll[purify]
+SetAttributes[purify, {Listable, HoldAll}]
+purify[f_[x__] -> expr_] := f -> Function[{x}, expr]
+purify[f_[x__] :> expr_] := f -> Function[{x}, expr]
+purify[f_[x__]] := purify[f[x] -> f[x]]
+
+
 (* ::Section:: *)
 (* Context Management *)
 
@@ -238,9 +245,10 @@ ClearAll[printAs]
 SetAttributes[printAs, HoldAll]
 
 printAs[symbol_Symbol, expr_, tag_Symbol] := (
-    ClearAll[symbol, tag];
+    ClearAll[symbol];
     tag /: expr = symbol;
     symbol /: MakeBoxes[symbol, StandardForm] = MakeBoxes[expr];
+    Definition[tag];
 )
 
 printAs[symbol_Symbol, expr_Symbol] := printAs[symbol, expr, expr]
